@@ -1,0 +1,16 @@
+WITH bat_ids AS (
+SELECT DISTINCT bi.batch_id
+  FROM SBS_VC_CTRCT_BY_PRTY p
+INNER JOIN SBS_VC_ISTMT stmt
+    ON p.vc_ctrct_id = stmt.vc_ctrct_id
+INNER JOIN SBS_VC_STMT_BATCH_ITM bi
+    ON stmt.id = bi.istmt_id
+ WHERE p.comp_cde = '2000'
+   AND p.del_ind = 'N'
+   AND stmt.del_ind = 'N'
+)
+SELECT *
+  FROM SBS_VC_STMT_BATCH b
+ INNER JOIN bat_ids i
+ ON b.batch_id = i.batch_id
+ WHERE b.batch_num LIKE '201703%'
